@@ -17,7 +17,7 @@ spec:
           secret:
             secretName: gcloud-storage-key
       containers:
-        - image: webflix/ratings:2020-12-28-09-55-06
+        - image: webflix/ratings:2021-01-01-03-26-17
           name: ratings
           volumeMounts:
             - name: gcloud-storage-key

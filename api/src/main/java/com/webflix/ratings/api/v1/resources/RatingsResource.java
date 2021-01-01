@@ -49,8 +49,10 @@ public class RatingsResource {
 	@GET
 	@Path("/{videoId}")
 	public Response getRating(@PathParam("videoId") Integer videoId) {
-
 		RatingEntity re = ratingBean.getRating(videoId, 3); // TODO Implement authorization
+
+		if (re == null)
+			return Response.status(Response.Status.NOT_FOUND).build();
 
 		return Response.status(Response.Status.OK).entity(re).build();
 	}
@@ -59,6 +61,9 @@ public class RatingsResource {
 	@Path("/{videoId}")
 	public Response postRating(@PathParam("videoId") Integer videoId, RatingEntity re) {
 		if (videoId == null || re.getRating() == null)
+			return Response.status(Response.Status.BAD_REQUEST).build();
+
+		if (!(re.getRating() >= 1 && re.getRating() <= 5))
 			return Response.status(Response.Status.BAD_REQUEST).build();
 
 		re.setVideo_id(videoId);
