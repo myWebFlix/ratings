@@ -12,19 +12,10 @@ spec:
       labels:
         app: ratings
     spec:
-      volumes:
-        - name: gcloud-storage-key
-          secret:
-            secretName: gcloud-storage-key
       containers:
-        - image: webflix/ratings:2021-01-01-03-26-17
+        - image: webflix/ratings:2021-01-01-22-02-00
           name: ratings
-          volumeMounts:
-            - name: gcloud-storage-key
-              mountPath: /var/secrets/gcloud-storage
           env:
-            - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: /var/secrets/gcloud-storage/key.json
             - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
               valueFrom:
                 secretKeyRef:
