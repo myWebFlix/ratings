@@ -5,9 +5,9 @@ import java.util.Objects;
 
 public class RatingId implements Serializable {
 	private Integer video_id;
-	private Integer user_id;
+	private String user_id;
 
-	public RatingId(Integer video_id, Integer user_id) {
+	public RatingId(Integer video_id, String user_id) {
 		this.video_id = video_id;
 		this.user_id = user_id;
 	}

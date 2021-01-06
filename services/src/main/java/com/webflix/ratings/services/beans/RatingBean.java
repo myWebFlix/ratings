@@ -9,6 +9,14 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.RequestBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
 @RequestScoped
 public class RatingBean {
 
@@ -22,7 +30,37 @@ public class RatingBean {
 		return query.getResultList();
 	}
 
-	public RatingEntity getRating(Integer video_id, Integer user_id){
+	public String manageUser(String idTokenString) {
+		HttpResponse userAuthResponse = null;
+
+		try {
+			HttpClient client = HttpClients.custom().build();
+			HttpUriRequest request = RequestBuilder.get()
+					.setUri("http://users:8080/v1/auth")
+					.setHeader("ID-Token", idTokenString)
+					.build();
+			userAuthResponse = client.execute(request);
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+		if (userAuthResponse != null && userAuthResponse.getStatusLine().getStatusCode() == 200) {
+
+			try {
+				HttpEntity entity = userAuthResponse.getEntity();
+				String userId = EntityUtils.toString(entity);
+				System.out.println("User ID: " + userId);
+
+				return userId;
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+		}
+		return null;
+	}
+
+	public RatingEntity getRating(Integer video_id, String user_id){
 //		return em.createQuery("SELECT re FROM RatingEntity re WHERE re.video_id = :video_id AND re.user_id = :user_id", RatingEntity.class)
 //				.setParameter("video_id", video_id)
 //				.setParameter("user_id", user_id)

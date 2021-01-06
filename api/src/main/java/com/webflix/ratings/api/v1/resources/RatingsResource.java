@@ -48,30 +48,56 @@ public class RatingsResource {
 
 	@GET
 	@Path("/{videoId}")
-	public Response getRating(@PathParam("videoId") Integer videoId) {
-		RatingEntity re = ratingBean.getRating(videoId, 3); // TODO Implement authorization
+	public Response getRating(@HeaderParam("ID-Token") String idTokenString,
+							  @PathParam("videoId") Integer videoId) {
+		String userId = ratingBean.manageUser(idTokenString);
 
-		if (re == null)
-			return Response.status(Response.Status.NOT_FOUND).build();
+		if (userId != null) {
 
-		return Response.status(Response.Status.OK).entity(re).build();
+			System.out.println("User ID: " + userId);
+
+			RatingEntity re = ratingBean.getRating(videoId, userId);
+
+			if (re == null)
+				return Response.status(Response.Status.NOT_FOUND).build();
+
+			return Response.status(Response.Status.OK).entity(re).build();
+
+		} else {
+
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+
+		}
 	}
 
 	@POST
 	@Path("/{videoId}")
-	public Response postRating(@PathParam("videoId") Integer videoId, RatingEntity re) {
-		if (videoId == null || re.getRating() == null)
-			return Response.status(Response.Status.BAD_REQUEST).build();
+	public Response postRating(@HeaderParam("ID-Token") String idTokenString,
+							   @PathParam("videoId") Integer videoId, RatingEntity re) {
+		String userId = ratingBean.manageUser(idTokenString);
 
-		if (!(re.getRating() >= 1 && re.getRating() <= 5))
-			return Response.status(Response.Status.BAD_REQUEST).build();
+		if (userId != null) {
 
-		re.setVideo_id(videoId);
-		re.setUser_id(3); // TODO Implement authorization
+			System.out.println("User ID: " + userId);
 
-		re = ratingBean.setRating(re);
+			if (videoId == null || re.getRating() == null)
+				return Response.status(Response.Status.BAD_REQUEST).build();
 
-		return Response.status(Response.Status.OK).entity(re).build();
+			if (!(re.getRating() >= 1 && re.getRating() <= 5))
+				return Response.status(Response.Status.BAD_REQUEST).build();
+
+			re.setVideo_id(videoId);
+			re.setUser_id(userId);
+
+			re = ratingBean.setRating(re);
+
+			return Response.status(Response.Status.OK).entity(re).build();
+
+		} else {
+
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+
+		}
 	}
 
 }
