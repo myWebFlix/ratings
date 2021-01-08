@@ -50,9 +50,10 @@ public class RatingsResource {
 	@Path("/{videoId}")
 	public Response getRating(@HeaderParam("ID-Token") String idTokenString,
 							  @PathParam("videoId") Integer videoId) {
-		String userId = ratingBean.manageUser(idTokenString);
+		String userIdStr = ratingBean.manageUser(idTokenString);
 
-		if (userId != null) {
+		if (userIdStr != null) {
+			Integer userId = Integer.parseInt(userIdStr);
 
 			System.out.println("User ID: " + userId);
 
@@ -74,9 +75,10 @@ public class RatingsResource {
 	@Path("/{videoId}")
 	public Response postRating(@HeaderParam("ID-Token") String idTokenString,
 							   @PathParam("videoId") Integer videoId, RatingEntity re) {
-		String userId = ratingBean.manageUser(idTokenString);
+		String userIdStr = ratingBean.manageUser(idTokenString);
 
-		if (userId != null) {
+		if (userIdStr != null) {
+			Integer userId = Integer.parseInt(userIdStr);
 
 			System.out.println("User ID: " + userId);
 

@@ -60,7 +60,7 @@ public class RatingBean {
 		return null;
 	}
 
-	public RatingEntity getRating(Integer video_id, String user_id){
+	public RatingEntity getRating(Integer video_id, Integer user_id){
 //		return em.createQuery("SELECT re FROM RatingEntity re WHERE re.video_id = :video_id AND re.user_id = :user_id", RatingEntity.class)
 //				.setParameter("video_id", video_id)
 //				.setParameter("user_id", user_id)

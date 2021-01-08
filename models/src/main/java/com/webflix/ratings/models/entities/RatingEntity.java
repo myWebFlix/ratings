@@ -26,7 +26,7 @@ public class RatingEntity {
 
 	@Id
 	@Column(name = "user_id")
-	private String user_id;
+	private Integer user_id;
 
 	@Column(name = "rating")
 	private Integer rating;
@@ -49,11 +49,11 @@ public class RatingEntity {
 		this.video_id = video_id;
 	}
 
-	public String getUser_id() {
+	public Integer getUser_id() {
 		return user_id;
 	}
 
-	public void setUser_id(String user_id) {
+	public void setUser_id(Integer user_id) {
 		this.user_id = user_id;
 	}
 
